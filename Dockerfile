@@ -10,10 +10,10 @@ COPY . /connect
 
 # install dependencies
 RUN yum update -y && \
-    yum install -y curl jq vim ncurses && \
+    yum install -y curl jq vim ncurses unzip && \
     yum clean all && \
     rm -rf /var/cache/yum
-    
+
 # terminal settings
 RUN echo 'export PS1="\[$(tput bold)\]\[$(tput setaf 6)\]\\t \\d\\n\[$(tput setaf 2)\][\[$(tput setaf 3)\]\u\[$(tput setaf 1)\]@\[$(tput setaf 3)\]\h \[$(tput setaf 6)\]\w\[$(tput setaf 2)\]]\[$(tput setaf 4)\\]\\$ \[$(tput sgr0)\]"' >> /root/.bashrc \
     && echo "alias grep='grep --color=auto'" >> /root/.bashrc
@@ -26,6 +26,7 @@ RUN ln -snf /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime && \
 RUN confluent-hub install --no-prompt debezium/debezium-connector-mysql:2.2.1 && \
     confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:10.7.4 && \
     confluent-hub install --no-prompt confluentinc/connect-transforms:1.4.5 
+RUN unzip /connect/confluent_hub/iceberg-iceberg-kafka-connect-1.9.1.zip -d /usr/share/confluent-hub-components
 
 # install python packages
 RUN pip3 install --upgrade pip && \

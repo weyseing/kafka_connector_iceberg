@@ -62,7 +62,6 @@ tags
 *.tar
 *.tar.gz
 *.tgz
-*.zip
 
 # Ignore everything in backup directories
 backup/
