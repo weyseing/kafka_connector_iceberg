@@ -65,6 +65,3 @@ tags
 
 # Ignore everything in backup directories
 backup/
-
-connector/
-ksql/
