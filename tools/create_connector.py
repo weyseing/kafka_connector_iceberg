@@ -43,6 +43,9 @@ if __name__ == "__main__":
         json_data["errors.deadletterqueue.topic.name"] = "dlq_" + topic_name
         json_data["schema.history.internal.kafka.topic"] = "schema_history_" + topic_name
         json_data["topic.prefix"] = connector_class + ".local_db"
+    elif (json_data['connector.class'] == "org.apache.iceberg.connect.IcebergSinkConnector"):
+        connector_class  = "sink_iceberg"
+        connector_name = connector_class + "_" + json_data['topics'] + "_" + datetime.now().strftime("%Y%m%d-%H%M%S")
 
     # create connector API
     url = "http://"+str(os.environ.get("CONNECTOR_USER"))+":"+str(os.environ.get("CONNECTOR_PASS"))+"@localhost:8083/connectors"

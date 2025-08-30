@@ -1,22 +1,27 @@
 {
-  "name": "iceberg-sink-connector",
-  "config": {
-    "connector.class": "io.tabular.iceberg.connect.IcebergSinkConnector",
-    "tasks.max": "1",
+  "connector.class": "org.apache.iceberg.connect.IcebergSinkConnector",
+  "tasks.max": "1",
 
-    "topics": "stream_order_intake",
+  "topics": "stream_order_intake",
 
-    "iceberg.table.default.catalog-name": "glue_catalog",
-    "iceberg.table.default.database": "kafka_data_lake",
-    "iceberg.table.default.name": "orders",
-    "iceberg.table.auto-create": "true",
-    "iceberg.table.create.partition-by": "day(order_timestamp)",
-    "iceberg.table.write.format": "parquet",
-    "iceberg.table.commit.interval-ms": "60000",
-    "iceberg.table.commit.size": "10000",
-    
-    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
-    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "value.converter.schemas.enable": "false"
-  }
+  "iceberg.table.default.catalog-name": "glue_catalog",
+  "iceberg.table.default.database": "kafka_data_lake",
+  "iceberg.table.default.name": "orders",
+  "iceberg.table.auto-create": "true",
+  "iceberg.table.create.partition-by": "day(create_date), bucket(16, buyer_id)",
+  "iceberg.table.write.format": "parquet",
+  "iceberg.table.commit.interval-ms": "60000",
+  "iceberg.table.commit.size": "10000",
+
+  "value.converter.schemas.enable": "true",
+  "value.converter": "io.confluent.connect.avro.AvroConverter",
+  "value.converter.schema.registry.url": "$SCHEMA_REGISTRY_URL",
+  "value.converter.basic.auth.credentials.source": "USER_INFO",
+  "value.converter.schema.registry.basic.auth.user.info": "$SCHEMA_REGISTRY_SECRET",
+
+  "key.converter.schemas.enable": "true",
+  "key.converter": "io.confluent.connect.avro.AvroConverter",
+  "key.converter.schema.registry.url": "$SCHEMA_REGISTRY_URL",
+  "key.converter.basic.auth.credentials.source": "USER_INFO",
+  "key.converter.schema.registry.basic.auth.user.info": "$SCHEMA_REGISTRY_SECRET"
 }
