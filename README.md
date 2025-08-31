@@ -16,11 +16,11 @@ docker exec -it ksqldb-cli ksql --config-file /etc/ksqldb-cli.properties http://
 
 ![Image](./assets/1.PNG)
 
-- **(Option 1) Move the unzip folder to `/usr/share/confluent-hub-components`**
+- **`(Option 1)` Move the unzip folder to `/usr/share/confluent-hub-components`**
 
 ![Image](./assets/2.PNG)
 
-- **(Option 2) Download via Confluent-Hub CLI**
+- **`(Option 2)` Download via Confluent-Hub CLI**
     - Change the plugin name based on downloaded zip file name
     - From zip file name `iceberg-iceberg-kafka-connect-1.9.1.zip` to `iceberg/iceberg-kafka-connect:1.9.1`
         ![Image](./assets/3.PNG)
@@ -45,4 +45,4 @@ docker exec -it ksqldb-cli ksql --config-file /etc/ksqldb-cli.properties http://
         wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-bundled-guava/1.9.1/iceberg-bundled-guava-1.9.1.jar
         ```
 
-
+    - **MUST restart connector worker** via restart docker container
