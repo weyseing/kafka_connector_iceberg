@@ -55,3 +55,8 @@ docker exec -it ksqldb-cli ksql --config-file /etc/ksqldb-cli.properties http://
         ```
 
     - **MUST restart connector worker** via restart docker container
+
+# Setup AWS S3 & Glue
+- **Create S3 bucket**
+
+- **Create Glue Database**
