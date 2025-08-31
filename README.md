@@ -29,11 +29,20 @@ docker exec -it ksqldb-cli ksql --config-file /etc/ksqldb-cli.properties http://
         confluent-hub install --no-prompt iceberg/iceberg-kafka-connect:1.9.1
         ```
 - **Download dependencies:** 
-```shell
-wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-api/1.9.1/iceberg-api-1.9.1.jar && \
-wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-core/1.9.1/iceberg-core-1.9.1.jar && \
-wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-common/1.9.1/iceberg-common-1.9.1.jar && \
-wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-bundled-guava/1.9.1/iceberg-bundled-guava-1.9.1.jar
-```
+    - Find the link from maven (https://central.sonatype.com/)
+        - `iceberg-api`
+        - `iceberg-core`
+        - `iceberg-common`
+
+        ![Image](./assets/4.PNG)
+        ![Image](./assets/5.PNG)
+
+    - Use `wget` to download to `/usr/share/confluent-hub-components` lib folder
+        ```shell
+        wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-api/1.9.1/iceberg-api-1.9.1.jar && \
+        wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-core/1.9.1/iceberg-core-1.9.1.jar && \
+        wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-common/1.9.1/iceberg-common-1.9.1.jar && \
+        wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-bundled-guava/1.9.1/iceberg-bundled-guava-1.9.1.jar
+        ```
 
 
