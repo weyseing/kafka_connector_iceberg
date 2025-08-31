@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Setup
 - **Copy `.env.example` to `.env`**
 - **Disable interceptor** as not available in community package
@@ -7,6 +8,8 @@ CONNECT_PRODUCER_INTERCEPTOR_CLASSES=""
 CONNECT_CONSUMER_INTERCEPTOR_CLASSES: ""
 ```
 
+=======
+>>>>>>> d209b779cc08fec9de2033a71536003c607462c5
 # Dockerfile References
 - **Dockerfile:** 
     - https://github.com/confluentinc/cp-all-in-one/blob/7.9.0-post/cp-all-in-one-cloud/Dockerfile-connect
