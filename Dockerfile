@@ -26,8 +26,12 @@ RUN ln -snf /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime && \
 RUN confluent-hub install --no-prompt debezium/debezium-connector-mysql:2.2.1 && \
     confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:10.7.4 && \
     confluent-hub install --no-prompt confluentinc/connect-transforms:1.4.5 
-RUN unzip /connect/confluent_hub/iceberg-iceberg-kafka-connect-1.9.1.zip -d /usr/share/confluent-hub-components
-
+RUN confluent-hub install --no-prompt iceberg/iceberg-kafka-connect:1.9.1 && \
+    wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-api/1.9.1/iceberg-api-1.9.1.jar && \
+    wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-core/1.9.1/iceberg-core-1.9.1.jar && \
+    wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-common/1.9.1/iceberg-common-1.9.1.jar && \
+    wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-bundled-guava/1.9.1/iceberg-bundled-guava-1.9.1.jar
+    
 # install python packages
 RUN pip3 install --upgrade pip && \
     pip3 install -r /connect/requirements.txt
