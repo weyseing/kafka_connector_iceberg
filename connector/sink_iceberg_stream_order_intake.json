@@ -6,7 +6,11 @@
 
   "iceberg.table.default.catalog-name": "glue_catalog",
   "iceberg.table.default.database": "iceberg_db1",
+<<<<<<< HEAD
   "iceberg.tables": "iceberg_db1.orders",
+=======
+  "iceberg.table.default.name": "orders",
+>>>>>>> da594432fe11ed77212e0063193f0ede8910acce
   "iceberg.table.auto-create": "true",
   "iceberg.table.create.partition-by": "day(create_date), bucket(16, buyer_id)",
   "iceberg.table.write.format": "parquet",

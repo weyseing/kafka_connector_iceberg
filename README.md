@@ -71,3 +71,7 @@ docker exec -it ksqldb-cli ksql --config-file /etc/ksqldb-cli.properties http://
 - **Create S3 bucket**
 
 - **Create Glue Database**
+# Setup AWS S3 & Glue
+- **Create S3 bucket**
+
+- **Create Glue Database**
