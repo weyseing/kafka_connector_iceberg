@@ -47,6 +47,9 @@ if __name__ == "__main__":
         connector_class  = "sink_iceberg"
         connector_name = connector_class + "_" + json_data['topics'] + "_" + datetime.now().strftime("%Y%m%d-%H%M%S")
 
+        # default value
+        json_data["errors.deadletterqueue.topic.name"] = "dlq_" + json_data['topics']
+
     # create connector API
     url = "http://"+str(os.environ.get("CONNECTOR_USER"))+":"+str(os.environ.get("CONNECTOR_PASS"))+"@localhost:8083/connectors"
     headers = {"content-type": "application/json"}
