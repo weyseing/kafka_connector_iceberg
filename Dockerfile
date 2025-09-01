@@ -23,8 +23,7 @@ RUN ln -snf /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime && \
     echo Asia/Kuala_Lumpur > /etc/timezone
 
 # install connector plugins
-RUN confluent-hub install --no-prompt debezium/debezium-connector-mysql:2.2.1 && \
-    confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:10.7.4 && \
+RUN confluent-hub install --no-prompt debezium/debezium-connector-mysql:3.1.2 && \
     confluent-hub install --no-prompt confluentinc/connect-transforms:1.4.5 && \
     confluent-hub install --no-prompt iceberg/iceberg-kafka-connect:1.9.1
     
