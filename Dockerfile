@@ -22,15 +22,14 @@ RUN echo 'export PS1="\[$(tput bold)\]\[$(tput setaf 6)\]\\t \\d\\n\[$(tput seta
 RUN ln -snf /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime && \
     echo Asia/Kuala_Lumpur > /etc/timezone
 
-# install plugins
+# install connector plugins
 RUN confluent-hub install --no-prompt debezium/debezium-connector-mysql:2.2.1 && \
     confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:10.7.4 && \
-    confluent-hub install --no-prompt confluentinc/connect-transforms:1.4.5 
-RUN confluent-hub install --no-prompt iceberg/iceberg-kafka-connect:1.9.1 && \
-    curl -fSL -o /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/iceberg-api-1.9.1.jar https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-api/1.9.1/iceberg-api-1.9.1.jar && \
-    curl -fSL -o /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/iceberg-core-1.9.1.jar https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-core/1.9.1/iceberg-core-1.9.1.jar && \
-    curl -fSL -o /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/iceberg-common-1.9.1.jar https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-common/1.9.1/iceberg-common-1.9.1.jar && \
-    curl -fSL -o /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/iceberg-bundled-guava-1.9.1.jar https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-bundled-guava/1.9.1/iceberg-bundled-guava-1.9.1.jar
+    confluent-hub install --no-prompt confluentinc/connect-transforms:1.4.5 && \
+    confluent-hub install --no-prompt iceberg/iceberg-kafka-connect:1.9.1
+    
+# connector dependencies
+RUN cp /connect/jars/iceberg-iceberg-kafka-connect/*.jar /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/
 
 # install python packages
 RUN pip3 install --upgrade pip && \

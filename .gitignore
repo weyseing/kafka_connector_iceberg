@@ -65,3 +65,5 @@ tags
 
 # Ignore everything in backup directories
 backup/
+
+jars/

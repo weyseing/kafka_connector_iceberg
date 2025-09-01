@@ -1,4 +1,9 @@
-<<<<<<< HEAD
+# Dockerfile References
+- **Dockerfile:** 
+    - https://github.com/confluentinc/cp-all-in-one/blob/7.9.0-post/cp-all-in-one-cloud/Dockerfile-connect
+    - https://github.com/confluentinc/cp-all-in-one/blob/7.9.0-post/cp-all-in-one-cloud/docker-compose.connect.yml
+- **Connector Config:** https://docs.confluent.io/platform/current/installation/docker/config-reference.html#kconnect-long-configuration
+
 # Setup
 - **Copy `.env.example` to `.env`**
 - **Disable interceptor** as not available in community package
@@ -8,13 +13,16 @@ CONNECT_PRODUCER_INTERCEPTOR_CLASSES=""
 CONNECT_CONSUMER_INTERCEPTOR_CLASSES: ""
 ```
 
-=======
->>>>>>> d209b779cc08fec9de2033a71536003c607462c5
-# Dockerfile References
-- **Dockerfile:** 
-    - https://github.com/confluentinc/cp-all-in-one/blob/7.9.0-post/cp-all-in-one-cloud/Dockerfile-connect
-    - https://github.com/confluentinc/cp-all-in-one/blob/7.9.0-post/cp-all-in-one-cloud/docker-compose.connect.yml
-- **Connector Config:** https://docs.confluent.io/platform/current/installation/docker/config-reference.html#kconnect-long-configuration
+- **Download connector dependencies JAR files** from Maven (https://central.sonatype.com/)
+    - Place under `jars/iceberg-iceberg-kafka-connect` folder
+        - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-api/1.9.1/iceberg-api-1.9.1.jar
+        - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-core/1.9.1/iceberg-core-1.9.1.jar
+        - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-common/1.9.1/iceberg-common-1.9.1.jar
+        - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-bundled-guava/1.9.1/iceberg-bundled-guava-1.9.1.jar
+        - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-aws/1.9.1/iceberg-aws-1.9.1.jar
+        - https://repo1.maven.org/maven2/software/amazon/awssdk/bundle/2.33.0/bundle-2.33.0.jar
+
+- **Start docker container** via `docker compose up -d`
 
 # KSQL-CLI
 - To open ksqlDB CLI session connected to ksqlDB server, run:
@@ -58,3 +66,8 @@ docker exec -it ksqldb-cli ksql --config-file /etc/ksqldb-cli.properties http://
         ```
 
     - **MUST restart connector worker** via restart docker container
+
+# Setup AWS S3 & Glue
+- **Create S3 bucket**
+
+- **Create Glue Database**

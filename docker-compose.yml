@@ -48,12 +48,8 @@ services:
       CONNECT_PRODUCER_SECURITY_PROTOCOL: PLAINTEXT
       CONNECT_PRODUCER_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required username="user" password="pass";
       CONNECT_PRODUCER_SASL_MECHANISM: PLAIN
-<<<<<<< HEAD
       # disable interceptor as not available in community package
       CONNECT_PRODUCER_INTERCEPTOR_CLASSES: ""
-=======
-      CONNECT_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
->>>>>>> d209b779cc08fec9de2033a71536003c607462c5
       CONNECT_PRODUCER_CONFLUENT_MONITORING_INTERCEPTOR_SECURITY_PROTOCOL: PLAINTEXT
       CONNECT_PRODUCER_CONFLUENT_MONITORING_INTERCEPTOR_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required username="user" password="pass";
       CONNECT_PRODUCER_CONFLUENT_MONITORING_INTERCEPTOR_SASL_MECHANISM: PLAIN
@@ -61,12 +57,8 @@ services:
       CONNECT_CONSUMER_SECURITY_PROTOCOL: PLAINTEXT
       CONNECT_CONSUMER_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required username="user" password="pass";
       CONNECT_CONSUMER_SASL_MECHANISM: PLAIN
-<<<<<<< HEAD
       # disable interceptor as not available in community package
       CONNECT_CONSUMER_INTERCEPTOR_CLASSES: ""
-=======
-      CONNECT_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
->>>>>>> d209b779cc08fec9de2033a71536003c607462c5
       CONNECT_CONSUMER_CONFLUENT_MONITORING_INTERCEPTOR_SECURITY_PROTOCOL: PLAINTEXT
       CONNECT_CONSUMER_CONFLUENT_MONITORING_INTERCEPTOR_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required username="user" password="pass";
       CONNECT_CONSUMER_CONFLUENT_MONITORING_INTERCEPTOR_SASL_MECHANISM: PLAIN

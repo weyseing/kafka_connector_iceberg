@@ -5,13 +5,17 @@
   "topics": "stream_order_intake",
 
   "iceberg.table.default.catalog-name": "glue_catalog",
-  "iceberg.table.default.database": "kafka_data_lake",
-  "iceberg.table.default.name": "orders",
+  "iceberg.table.default.database": "iceberg_db1",
+  "iceberg.tables": "iceberg_db1.orders",
   "iceberg.table.auto-create": "true",
   "iceberg.table.create.partition-by": "day(create_date), bucket(16, buyer_id)",
   "iceberg.table.write.format": "parquet",
   "iceberg.table.commit.interval-ms": "60000",
   "iceberg.table.commit.size": "10000",
+
+  "iceberg.catalog.catalog-impl": "org.apache.iceberg.aws.glue.GlueCatalog",
+  "iceberg.catalog.warehouse": "s3a://iceberg-order/",
+  "iceberg.catalog.io-impl": "org.apache.iceberg.aws.s3.S3FileIO",
 
   "value.converter.schemas.enable": "true",
   "value.converter": "io.confluent.connect.avro.AvroConverter",
