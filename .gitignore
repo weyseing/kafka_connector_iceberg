@@ -66,4 +66,5 @@ tags
 # Ignore everything in backup directories
 backup/
 
-jars/*/*.jar
+plugins/*
+!plugins/.gitkeep

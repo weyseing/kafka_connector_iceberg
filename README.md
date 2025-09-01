@@ -18,56 +18,42 @@ CONNECT_PRODUCER_INTERCEPTOR_CLASSES=""
 CONNECT_CONSUMER_INTERCEPTOR_CLASSES: ""
 ```
 
-- **Download connector dependencies JAR files** from Maven (https://central.sonatype.com/)
-    - Place under `jars/iceberg-iceberg-kafka-connect` folder
-        - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-api/1.9.1/iceberg-api-1.9.1.jar
-        - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-core/1.9.1/iceberg-core-1.9.1.jar
-        - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-common/1.9.1/iceberg-common-1.9.1.jar
-        - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-bundled-guava/1.9.1/iceberg-bundled-guava-1.9.1.jar
-        - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-aws/1.9.1/iceberg-aws-1.9.1.jar
-        - https://repo1.maven.org/maven2/software/amazon/awssdk/bundle/2.33.0/bundle-2.33.0.jar
-        - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-kafka-connect-events/1.9.1/iceberg-kafka-connect-events-1.9.1.jar
-        - https://repo1.maven.org/maven2/dev/failsafe/failsafe/3.3.2/failsafe-3.3.2.jar
-        - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-parquet/1.9.1/iceberg-parquet-1.9.1.jar
-        - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-data/1.9.1/iceberg-data-1.9.1.jar
-        - https://repo1.maven.org/maven2/org/apache/parquet/parquet-hadoop/1.15.2/parquet-hadoop-1.15.2.jar
-        - https://repo1.maven.org/maven2/org/apache/parquet/parquet-column/1.15.2/parquet-column-1.15.2.jar
-        - https://repo1.maven.org/maven2/org/apache/parquet/parquet-avro/1.15.2/parquet-avro-1.15.2.jar
-
+- **Build Sink-Iceberg connector plugin**
+    - Refer to section `# Build Sink-Iceberg Connector` below
 - **Start docker container** via `docker compose up -d`
 
-# Sink-Iceberg Connector Installation
-### Setup Connector Plugin: -
-- **Download from Confluent Hub** via https://www.confluent.io/hub/iceberg/iceberg-kafka-connect
-
-![Image](./assets/1.PNG)
-
-- **`(Option 1)` Move the unzip folder to `/usr/share/confluent-hub-components`**
-
-![Image](./assets/2.PNG)
-
-- **`(Option 2)` Download via Confluent-Hub CLI**
-    - Change the plugin name based on downloaded zip file name
-    - From zip file name `iceberg-iceberg-kafka-connect-1.9.1.zip` to `iceberg/iceberg-kafka-connect:1.9.1`
-        ![Image](./assets/3.PNG)
-    - **Download plugin:** 
+# Build Sink-Iceberg Connector
+- **Install Java (openjdk)**
+    - `sudo apt update && sudo apt install openjdk-17-jdk`
+    - `update-alternatives --config java` to get JAVA_HOME path value
+    - vim `~/.bash_profile`
+        - put result from `update-alternatives --config java` to `JAVA_HOME` env value
         ```shell
-        confluent-hub install --no-prompt iceberg/iceberg-kafka-connect:1.9.1
+        export JAVA_HOME= #EXAMPLE = /usr/lib/jvm/java-17-openjdk-amd64
+        export PATH=$PATH:$JAVA_HOME/bin
         ```
-### Setup Connector Dependencies: -
-- Find the link from maven (https://central.sonatype.com/)
+    - `source ~/.bash_profile`
+    - `echo $JAVA_HOME` to verify
 
-![Image](./assets/4.PNG)
-![Image](./assets/5.PNG)
+- **Gradle build**
+    - Clone apache-iceberg repo
+        ```shell
+        git clone https://github.com/apache/iceberg.git
+        cd iceberg
+        ```
+    - Build
+        ```shell
+        cd kafka-connect
+        ../gradlew -x test -x integrationTest clean build
+        ```
+    - Move the plugin folder to connector plugin path
+        - Replace `<PLUGIN_PATH>` below to this repo's `plugins folder path`
+        ```shell
+        cd kafka-connect-runtime/build/distributions/ && ls -l
+        cp /connect/plugins/iceberg-kafka-connect-runtime-hive-1.11.0-SNAPSHOT -d <PLUGIN_PATH>`
+        ```
 
-- Use `wget` to download & place to `/usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib` folder
-```shell
-wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-api/1.9.1/iceberg-api-1.9.1.jar
-```
-
-- **MUST restart connector worker** via restart docker container
 
 # Setup AWS S3 & Glue
 - **Create S3 bucket**
-
 - **Create Glue Database**

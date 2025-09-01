@@ -24,11 +24,10 @@ RUN ln -snf /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime && \
 
 # install connector plugins
 RUN confluent-hub install --no-prompt debezium/debezium-connector-mysql:3.1.2 && \
-    confluent-hub install --no-prompt confluentinc/connect-transforms:1.4.5 && \
-    confluent-hub install --no-prompt iceberg/iceberg-kafka-connect:1.9.1
-    
-# connector dependencies
-RUN cp /connect/jars/iceberg-iceberg-kafka-connect/*.jar /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/
+    confluent-hub install --no-prompt confluentinc/connect-transforms:1.4.5
+
+# install sink-iceberg-connector
+RUN unzip -o /connect/plugins/iceberg-kafka-connect-runtime-hive-1.11.0-SNAPSHOT.zip -d /usr/share/confluent-hub-components/
 
 # install python packages
 RUN pip3 install --upgrade pip && \
