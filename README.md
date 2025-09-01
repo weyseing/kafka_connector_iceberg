@@ -5,7 +5,12 @@
 - **Connector Config:** https://docs.confluent.io/platform/current/installation/docker/config-reference.html#kconnect-long-configuration
 
 # Setup
-- **Copy `.env.example` to `.env`**
+- **Copy `.env.example` to `.env` fill up value below**
+    - Must create IAM access key with `AmazonS3FullAccess`, `AWSGlueConsoleFullAccess` permission
+```properties
+AWS_ACCESS_KEY_ID= 
+AWS_SECRET_ACCESS_KEY=
+```
 - **Disable interceptor** as not available in community package
     - set in `docker-compose.yml`
 ```properties
@@ -22,17 +27,17 @@ CONNECT_CONSUMER_INTERCEPTOR_CLASSES: ""
         - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-aws/1.9.1/iceberg-aws-1.9.1.jar
         - https://repo1.maven.org/maven2/software/amazon/awssdk/bundle/2.33.0/bundle-2.33.0.jar
         - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-kafka-connect-events/1.9.1/iceberg-kafka-connect-events-1.9.1.jar
+        - https://repo1.maven.org/maven2/dev/failsafe/failsafe/3.3.2/failsafe-3.3.2.jar
+        - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-parquet/1.9.1/iceberg-parquet-1.9.1.jar
+        - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-data/1.9.1/iceberg-data-1.9.1.jar
+        - https://repo1.maven.org/maven2/org/apache/parquet/parquet-hadoop/1.15.2/parquet-hadoop-1.15.2.jar
+        - https://repo1.maven.org/maven2/org/apache/parquet/parquet-column/1.15.2/parquet-column-1.15.2.jar
+        - https://repo1.maven.org/maven2/org/apache/parquet/parquet-avro/1.15.2/parquet-avro-1.15.2.jar
 
 - **Start docker container** via `docker compose up -d`
 
-# KSQL-CLI
-- To open ksqlDB CLI session connected to ksqlDB server, run:
-```sh
-docker exec -it ksqldb-cli ksql --config-file /etc/ksqldb-cli.properties http://ksqldb-server:8088
-docker exec -it ksqldb-cli ksql --config-file /etc/ksqldb-cli.properties http://ksqldb-server:8088 -e "SHOW STREAMS;"
-```
-
 # Sink-Iceberg Connector Installation
+### Setup Connector Plugin: -
 - **Download from Confluent Hub** via https://www.confluent.io/hub/iceberg/iceberg-kafka-connect
 
 ![Image](./assets/1.PNG)
@@ -49,24 +54,18 @@ docker exec -it ksqldb-cli ksql --config-file /etc/ksqldb-cli.properties http://
         ```shell
         confluent-hub install --no-prompt iceberg/iceberg-kafka-connect:1.9.1
         ```
-- **Download dependencies:** 
-    - Find the link from maven (https://central.sonatype.com/)
-        - `iceberg-api`
-        - `iceberg-core`
-        - `iceberg-common`
+### Setup Connector Dependencies: -
+- Find the link from maven (https://central.sonatype.com/)
 
-        ![Image](./assets/4.PNG)
-        ![Image](./assets/5.PNG)
+![Image](./assets/4.PNG)
+![Image](./assets/5.PNG)
 
-    - Use `wget` to download to `/usr/share/confluent-hub-components` lib folder
-        ```shell
-        wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-api/1.9.1/iceberg-api-1.9.1.jar && \
-        wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-core/1.9.1/iceberg-core-1.9.1.jar && \
-        wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-common/1.9.1/iceberg-common-1.9.1.jar && \
-        wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-bundled-guava/1.9.1/iceberg-bundled-guava-1.9.1.jar
-        ```
+- Use `wget` to download & place to `/usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib` folder
+```shell
+wget -P /usr/share/confluent-hub-components/iceberg-iceberg-kafka-connect/lib/ https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-api/1.9.1/iceberg-api-1.9.1.jar
+```
 
-    - **MUST restart connector worker** via restart docker container
+- **MUST restart connector worker** via restart docker container
 
 # Setup AWS S3 & Glue
 - **Create S3 bucket**

@@ -5,7 +5,7 @@
   "topics": "stream_order_intake",
 
   "iceberg.catalog.type": "glue",
-  "iceberg.catalog.glue.warehouse": "s3://iceberg-order/",
+  "iceberg.catalog.warehouse": "s3://iceberg-order/",
   "iceberg.catalog.io-impl": "org.apache.iceberg.aws.s3.S3FileIO",
 
   "iceberg.tables": "iceberg_db1.orders",
@@ -29,7 +29,7 @@
   "key.converter.schema.registry.basic.auth.user.info": "$SCHEMA_REGISTRY_SECRET",
   
   "errors.log.enable": "true",
-  "errors.tolerance": "none",
+  "errors.tolerance": "all",
   "errors.deadletterqueue.context.headers.enable": "true",
   "errors.deadletterqueue.topic.name": "DEFAULT",
   "errors.deadletterqueue.topic.replication.factor": "$TOPIC_REPLICATION"
