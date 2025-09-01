@@ -21,6 +21,7 @@ CONNECT_CONSUMER_INTERCEPTOR_CLASSES: ""
         - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-bundled-guava/1.9.1/iceberg-bundled-guava-1.9.1.jar
         - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-aws/1.9.1/iceberg-aws-1.9.1.jar
         - https://repo1.maven.org/maven2/software/amazon/awssdk/bundle/2.33.0/bundle-2.33.0.jar
+        - https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-kafka-connect-events/1.9.1/iceberg-kafka-connect-events-1.9.1.jar
 
 - **Start docker container** via `docker compose up -d`
 
@@ -67,10 +68,6 @@ docker exec -it ksqldb-cli ksql --config-file /etc/ksqldb-cli.properties http://
 
     - **MUST restart connector worker** via restart docker container
 
-# Setup AWS S3 & Glue
-- **Create S3 bucket**
-
-- **Create Glue Database**
 # Setup AWS S3 & Glue
 - **Create S3 bucket**
 
