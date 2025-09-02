@@ -12,7 +12,7 @@
   "iceberg.tables.auto-create-enabled": "true",
   "iceberg.tables.evolve-schema-enabled": "true",
   "iceberg.tables.write.format": "parquet",
-  "iceberg.tables.commit.interval-ms": "60000",
+  "iceberg.control.commit.interval-ms": "10000",
   "iceberg.tables.commit.size-rows": "10000",
   "iceberg.tables.default.partition-spec": "BUYER_ID",
 
