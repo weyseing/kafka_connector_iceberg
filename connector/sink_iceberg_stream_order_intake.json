@@ -5,11 +5,11 @@
   "topics": "stream_order_intake",
 
   "iceberg.catalog.type": "glue",
-  "iceberg.catalog.warehouse": "s3://iceberg-order/",
   "iceberg.catalog.io-impl": "org.apache.iceberg.aws.s3.S3FileIO",
+  "iceberg.catalog.warehouse": "s3://kafka-iceberg-107698500998/",
 
-  "iceberg.tables": "iceberg_db1.orders",
-  "iceberg.tables.auto-create-enabled": "true",
+  "iceberg.tables": "iceberg_db1.order",
+  "iceberg.tables.auto-create-enabled": "false",
   "iceberg.tables.evolve-schema-enabled": "true",
   "iceberg.tables.write.format": "parquet",
   "iceberg.control.commit.interval-ms": "10000",

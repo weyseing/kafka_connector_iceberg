@@ -17,12 +17,9 @@ AWS_SECRET_ACCESS_KEY=
 CONNECT_PRODUCER_INTERCEPTOR_CLASSES=""
 CONNECT_CONSUMER_INTERCEPTOR_CLASSES: ""
 ```
-
-- **Build Sink-Iceberg connector plugin**
-    - Refer to section `# Build Sink-Iceberg Connector` below
 - **Start docker container** via `docker compose up -d`
 
-# Build Sink-Iceberg Connector
+# `[Optional]` Build Sink-Iceberg Connector
 - **Install Java (openjdk)**
     - `sudo apt update && sudo apt install openjdk-17-jdk`
     - `update-alternatives --config java` to get JAVA_HOME path value
@@ -54,6 +51,36 @@ CONNECT_CONSUMER_INTERCEPTOR_CLASSES: ""
         ```
 
 
-# Setup AWS S3 & Glue
+# Setup AWS S3 & Glue Database/Tables
 - **Create S3 bucket**
+
+![Image](./assets/6.PNG)
+
 - **Create Glue Database**
+
+![Image](./assets/7.PNG)
+
+- **Create Glue Table**
+    - For IAM role
+        - MUST create role with `AmazonS3FullAccess`, `AWSGlueConsoleFullAccess` 
+        - MUST add **Trust Relationships** below in `IAM > Role > Trust Relationships`
+            ```json
+            {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": [
+                                "glue.amazonaws.com"
+                            ]
+                        },
+                        "Action": "sts:AssumeRole"
+                    }
+                ]
+            }
+            ```
+![Image](./assets/8.PNG)
+![Image](./assets/9.PNG)
+![Image](./assets/10.PNG)
+![Image](./assets/11.PNG)
