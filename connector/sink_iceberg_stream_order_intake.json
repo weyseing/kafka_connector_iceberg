@@ -4,17 +4,20 @@
   
   "topics": "stream_order_intake",
 
-  "iceberg.catalog.type": "glue",
+  "iceberg.catalog.catalog-impl": "org.apache.iceberg.aws.glue.GlueCatalog",
   "iceberg.catalog.io-impl": "org.apache.iceberg.aws.s3.S3FileIO",
   "iceberg.catalog.warehouse": "s3://kafka-iceberg-107698500998/",
-
   "iceberg.tables": "iceberg_db1.order",
+
   "iceberg.tables.auto-create-enabled": "true",
   "iceberg.tables.evolve-schema-enabled": "true",
   "iceberg.tables.write.format": "parquet",
   "iceberg.control.commit.interval-ms": "10000",
   "iceberg.tables.commit.size-rows": "10000",
+
   "iceberg.tables.default.partition-spec": "BUYER_ID",
+  "iceberg.tables.upsert-mode-enabled": "true",
+  "iceberg.table.iceberg_db1.order.id-columns": "id",
 
   "value.converter": "io.confluent.connect.avro.AvroConverter",
   "value.converter.schemas.enable": "true",
