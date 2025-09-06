@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS `order` (
   product VARCHAR(100),
   amount INT,
   buyer_id INT,
-  create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+  create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  update_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 INSERT INTO `order` (id, product, amount, buyer_id, create_date) VALUES
