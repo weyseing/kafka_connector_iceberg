@@ -9,15 +9,15 @@
   "iceberg.catalog.warehouse": "s3://kafka-iceberg-107698500998/",
   "iceberg.tables": "iceberg_db1.order",
 
-  "iceberg.tables.auto-create-enabled": "true",
-  "iceberg.tables.evolve-schema-enabled": "true",
+  "iceberg.tables.auto-create-enabled": "false",
+  "iceberg.tables.evolve-schema-enabled": "false",
   "iceberg.tables.write.format": "parquet",
-  "iceberg.control.commit.interval-ms": "10000",
+  "iceberg.control.commit.interval-ms": "1000",
   "iceberg.tables.commit.size-rows": "10000",
 
-  "iceberg.tables.default.partition-spec": "BUYER_ID",
+  "__comment__.iceberg.tables.default-partition-by": "id",
   "iceberg.tables.upsert-mode-enabled": "true",
-  "iceberg.table.iceberg_db1.order.id-columns": "id",
+  "iceberg.tables.default-id-columns": "id",
 
   "value.converter": "io.confluent.connect.avro.AvroConverter",
   "value.converter.schemas.enable": "true",
@@ -25,12 +25,13 @@
   "value.converter.basic.auth.credentials.source": "USER_INFO",
   "value.converter.schema.registry.basic.auth.user.info": "$SCHEMA_REGISTRY_SECRET",
 
-  "key.converter": "io.confluent.connect.avro.AvroConverter",
-  "key.converter.schemas.enable": "true",
-  "key.converter.schema.registry.url": "$SCHEMA_REGISTRY_URL",
-  "key.converter.basic.auth.credentials.source": "USER_INFO",
-  "key.converter.schema.registry.basic.auth.user.info": "$SCHEMA_REGISTRY_SECRET",
+  "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+  "key.converter.schemas.enable": "false",
   
+  "transforms": "ExtractKey",
+  "transforms.ExtractKey.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+  "transforms.ExtractKey.field": "id",
+
   "errors.log.enable": "true",
   "errors.tolerance": "all",
   "errors.deadletterqueue.context.headers.enable": "true",
