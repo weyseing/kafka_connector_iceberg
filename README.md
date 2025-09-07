@@ -51,36 +51,112 @@ CONNECT_CONSUMER_INTERCEPTOR_CLASSES: ""
         ```
 
 
-# Setup AWS S3 & Glue Database/Tables
+# Setup AWS S3 Bucket
 - **Create S3 bucket**
-
 ![Image](./assets/6.PNG)
 
-- **Create Glue Database**
+# Setup Glue Database & Tables
+## Create Glue Database
 
 ![Image](./assets/7.PNG)
 
-- **Create Glue Table**
-    - For IAM role
-        - MUST create role with `AmazonS3FullAccess`, `AWSGlueConsoleFullAccess` 
-        - MUST add **Trust Relationships** below in `IAM > Role > Trust Relationships`
-            ```json
-            {
-                "Version": "2012-10-17",
-                "Statement": [
-                    {
-                        "Effect": "Allow",
-                        "Principal": {
-                            "Service": [
-                                "glue.amazonaws.com"
-                            ]
-                        },
-                        "Action": "sts:AssumeRole"
-                    }
-                ]
-            }
-            ```
+## Create Glue Table `(AWS Console)`
+- For IAM role
+    - MUST create role with `AmazonS3FullAccess`, `AWSGlueConsoleFullAccess` 
+    - MUST add **Trust Relationships** below in `IAM > Role > Trust Relationships`
+        ```json
+        {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": [
+                            "glue.amazonaws.com"
+                        ]
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        }
+        ```
 ![Image](./assets/8.PNG)
 ![Image](./assets/9.PNG)
 ![Image](./assets/10.PNG)
 ![Image](./assets/11.PNG)
+
+
+## Create Glue Table `(Glue ETL Job)`
+
+- **Create Spark script**
+
+![Image](./assets/12.PNG)
+
+- **Set IAM role**
+    - MUST create role with `AmazonS3FullAccess`, `AWSGlueConsoleFullAccess`, `CloudWatchFullAccess`
+
+![Image](./assets/13.PNG)
+
+- **Set job parameters** at `Advanced properties > Job parameters`
+    - Key: `--datalake-formats`
+    - Value: 
+        ```shell
+        # Must update <ICEBERG_S3_BUCKET> below
+        spark.sql.catalog.glue_catalog=org.apache.iceberg.spark.SparkCatalog --conf spark.sql.catalog.glue_catalog.warehouse=s3://<ICEBERG_S3_BUCKET>/iceberg-warehouse/ --conf spark.sql.catalog.glue_catalog.catalog-impl=org.apache.iceberg.aws.glue.GlueCatalog --conf spark.sql.catalog.glue_catalog.io-impl=org.apache.iceberg.aws.s3.S3FileIO --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions.
+        ```
+    
+- **PySpark script**
+```python
+import sys
+from awsglue.utils import getResolvedOptions
+from pyspark.sql.session import SparkSession
+
+# Get job parameters
+args = getResolvedOptions(sys.argv, ['JOB_NAME'])
+
+# Initialize Spark session with Iceberg configurations from job parameters
+spark = SparkSession.builder.appName(args['JOB_NAME']).getOrCreate()
+
+# First, drop the existing table to ensure a clean slate.
+print("Dropping existing table iceberg_db1.order if it exists...")
+spark.sql("DROP TABLE IF EXISTS glue_catalog.iceberg_db1.order")
+
+# Create the Iceberg table using Spark SQL
+# Define the 'id' field as NOT NULL during creation
+print("Creating new Iceberg table iceberg_db1.order...")
+spark.sql("""
+CREATE TABLE glue_catalog.iceberg_db1.order (
+  id INT NOT NULL,
+  product STRING,
+  amount INT,
+  buyer_id INT,
+  create_date STRING,
+  update_date STRING,
+  row_time LONG
+)
+USING iceberg
+LOCATION 's3://kafka-iceberg-107698500998/iceberg_db1.db/order'
+TBLPROPERTIES (
+  'format-version'='2',
+  'write.parquet.compression-codec'='zstd'
+)
+""")
+
+# Now that 'id' is guaranteed to be NOT NULL, set it as the identifier field
+print("Setting identifier field 'id' for the new table...")
+spark.sql("ALTER TABLE glue_catalog.iceberg_db1.order SET IDENTIFIER FIELDS id")
+
+# Verify the table schema and properties
+print("Verifying table schema after creation...")
+spark.sql("DESCRIBE EXTENDED glue_catalog.iceberg_db1.order").show(truncate=False)
+
+# check table properties
+print("Check table properties...")
+spark.sql("SHOW TBLPROPERTIES glue_catalog.iceberg_db1.order").show(truncate=False)
+
+# Stop the Spark session
+print("New table iceberg_db1.order has been created and configured correctly.")
+spark.stop()
+```
+
+- **Run Glue job & check logs**
