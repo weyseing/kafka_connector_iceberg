@@ -1,5 +1,5 @@
 CREATE STREAM stream_order_intake
-WITH (KAFKA_TOPIC='stream_order_intake', VALUE_FORMAT='AVRO', KEY_FORMAT='JSON') AS
+WITH (KAFKA_TOPIC='stream_order_intake', VALUE_FORMAT='JSON', KEY_FORMAT='JSON') AS
 SELECT
     STRUCT(`id` := AFTER->ID) AS `KEY`,
     AFTER->ID AS `id`,
