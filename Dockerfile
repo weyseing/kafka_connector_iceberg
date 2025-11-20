@@ -9,8 +9,7 @@ USER root
 COPY . /connect
 
 # install dependencies
-RUN yum update -y && \
-    yum install --allowerasing -y curl jq vim ncurses unzip && \
+RUN yum install --allowerasing -y curl jq vim ncurses unzip && \
     yum clean all && \
     rm -rf /var/cache/yum
 
